@@ -42,5 +42,7 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
     accounts.put(fromAccount.getAccountId(), fromAccount);
     accounts.put(toAccount.getAccountId(), toAccount);
     log.info("Money has been transferred between accounts.");
+    log.info("Balance in account " + fromAccount.getAccountId() + " is " + fromAccount.getBalance());
+    log.info("Balance in account " + toAccount.getAccountId() + " is " + toAccount.getBalance());
   }
 }
