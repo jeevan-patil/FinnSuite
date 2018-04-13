@@ -38,6 +38,7 @@ public class AccountsService {
    * Method is used for money transfer. Money is transferred from one account to another.
    *
    * @param transferRequest Transfer request contains both account details and amount to transfer.
+   * @return {@code TransferResponse} An object which is returned by API with status and message.
    */
   public TransferResponse transferAmount(final TransferRequest transferRequest) {
     Account transferFromAccount = accountsRepository.getAccount(transferRequest.getAccountFromId());
@@ -65,13 +66,15 @@ public class AccountsService {
   private void checkAccountExistence(TransferRequest transferRequest, Account transferFromAccount,
       Account transferToAccount) {
     if (transferFromAccount == null) {
-      throw new AccountNotFoundException(
-          "Account with id " + transferRequest.getAccountFromId() + " not found.");
+      final String error = "Account with id " + transferRequest.getAccountFromId() + " not found.";
+      log.error(error);
+      throw new AccountNotFoundException(error);
     }
 
     if (transferToAccount == null) {
-      throw new AccountNotFoundException(
-          "Account with id " + transferRequest.getAccountToId() + " not found.");
+      final String error = "Account with id " + transferRequest.getAccountToId() + " not found.";
+      log.error(error);
+      throw new AccountNotFoundException(error);
     }
   }
 }
