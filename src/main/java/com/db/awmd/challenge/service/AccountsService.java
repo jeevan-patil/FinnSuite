@@ -47,7 +47,7 @@ public class AccountsService {
     // check if the accounts are valid or present
     checkAccountExistence(transferRequest, transferFromAccount, transferToAccount);
 
-    BigDecimal transferAmount = transferRequest.getAmount();
+    final BigDecimal transferAmount = transferRequest.getAmount();
     accountsRepository
         .transferBetweenAccounts(transferFromAccount, transferToAccount, transferAmount);
     notificationService.notifyAboutTransfer(transferFromAccount,
