@@ -34,13 +34,6 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
     accounts.clear();
   }
 
-  /**
-   * Method which updates records in the database while money transfer.
-   *
-   * @param fromAccount Money being transferred from account.
-   * @param toAccount Money being transferred to account.
-   * @param amount Amount being transferred between accounts.
-   */
   @Override
   public void transferBetweenAccounts(final Account fromAccount, final Account toAccount,
       final BigDecimal amount) throws InsufficientBalanceException {

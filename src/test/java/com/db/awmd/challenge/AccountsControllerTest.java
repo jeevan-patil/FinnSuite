@@ -106,6 +106,9 @@ public class AccountsControllerTest {
             content().string("{\"accountId\":\"" + uniqueAccountId + "\",\"balance\":123.45}"));
   }
 
+  /**
+   * Positive test for amount transfer between accounts.
+   */
   @Test
   public void transferAmount() throws Exception {
     createAccount("AC1", new BigDecimal(4000));
@@ -116,6 +119,22 @@ public class AccountsControllerTest {
         .andExpect(status().isOk());
   }
 
+  /**
+   * Negative test where amount being transferred is invalid.
+   */
+  @Test
+  public void transferAmountInvalidAmount() throws Exception {
+    createAccount("AC1", new BigDecimal(4000));
+    createAccount("AC2", new BigDecimal(3000));
+
+    this.mockMvc.perform(post("/v1/accounts/transfer").contentType(MediaType.APPLICATION_JSON)
+        .content("{\"accountFromId\":\"AC2\",\"accountToId\":\"AC1\",\"amount\":0}"))
+        .andExpect(status().isBadRequest());
+  }
+
+  /**
+   * Negative test where one of the accounts does not exist.
+   */
   //@Test
   public void transferAmountAccountNotPresent() throws Exception {
     createAccount("AC1", new BigDecimal(4000));
@@ -129,6 +148,9 @@ public class AccountsControllerTest {
     }
   }
 
+  /**
+   * Transfer amount test where an account has insufficient balance.
+   */
   //@Test
   public void transferAmountInsufficientBalance() throws Exception {
     createAccount("AC1", new BigDecimal(4000));

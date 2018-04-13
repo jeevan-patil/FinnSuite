@@ -12,5 +12,12 @@ public interface AccountsRepository {
 
   void clearAccounts();
 
+  /**
+   * Method which updates records in the database while money transfer.
+   *
+   * @param fromAccount Money being transferred from account.
+   * @param toAccount Money being transferred to account.
+   * @param amount Amount being transferred between accounts.
+   */
   void transferBetweenAccounts(Account fromAccount, Account toAccount, BigDecimal amount);
 }
