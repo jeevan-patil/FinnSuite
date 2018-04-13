@@ -22,8 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
@@ -126,8 +124,8 @@ public class AccountsControllerTest {
       this.mockMvc.perform(post("/v1/accounts/transfer").contentType(MediaType.APPLICATION_JSON)
           .content("{\"accountFromId\":\"AC2\",\"accountToId\":\"AC1\",\"amount\":200}"));
       fail("Should have failed while money transfer.");
-    } catch (AccountNotFoundException anfe) {
-      assertThat(anfe.getMessage()).isEqualTo("Account with id AC2 not found.");
+    } catch (AccountNotFoundException ex) {
+      assertThat(ex.getMessage()).isEqualTo("Account with id AC2 not found.");
     }
   }
 
@@ -137,7 +135,7 @@ public class AccountsControllerTest {
     createAccount("AC2", new BigDecimal(3000));
 
     try {
-      ResultActions result = this.mockMvc.perform(post("/v1/accounts/transfer").contentType(MediaType.APPLICATION_JSON)
+      this.mockMvc.perform(post("/v1/accounts/transfer").contentType(MediaType.APPLICATION_JSON)
           .content("{\"accountFromId\":\"AC2\",\"accountToId\":\"AC1\",\"amount\":3200}"));
       fail("Should have failed while money transfer due to insufficient balance in the account.");
     } catch (InsufficientBalanceException ex) {

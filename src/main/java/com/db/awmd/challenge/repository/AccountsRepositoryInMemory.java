@@ -2,6 +2,7 @@ package com.db.awmd.challenge.repository;
 
 import com.db.awmd.challenge.domain.Account;
 import com.db.awmd.challenge.exception.DuplicateAccountIdException;
+import com.db.awmd.challenge.exception.InsufficientBalanceException;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +43,7 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
    */
   @Override
   public void transferBetweenAccounts(final Account fromAccount, final Account toAccount,
-      final BigDecimal amount) {
+      final BigDecimal amount) throws InsufficientBalanceException {
     fromAccount.debit(amount);
     toAccount.credit(amount);
     accounts.put(fromAccount.getAccountId(), fromAccount);
