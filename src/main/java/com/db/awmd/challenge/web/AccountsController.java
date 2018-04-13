@@ -1,6 +1,8 @@
 package com.db.awmd.challenge.web;
 
 import com.db.awmd.challenge.domain.Account;
+import com.db.awmd.challenge.domain.TransferRequest;
+import com.db.awmd.challenge.domain.TransferResponse;
 import com.db.awmd.challenge.exception.DuplicateAccountIdException;
 import com.db.awmd.challenge.service.AccountsService;
 import javax.validation.Valid;
@@ -33,7 +35,7 @@ public class AccountsController {
     log.info("Creating account {}", account);
 
     try {
-    this.accountsService.createAccount(account);
+      this.accountsService.createAccount(account);
     } catch (DuplicateAccountIdException daie) {
       return new ResponseEntity<>(daie.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -45,6 +47,20 @@ public class AccountsController {
   public Account getAccount(@PathVariable String accountId) {
     log.info("Retrieving account for id {}", accountId);
     return this.accountsService.getAccount(accountId);
+  }
+
+  /**
+   * API used to transfer money between two accounts.
+   *
+   * @param transferRequest Object which holds transfer request data.
+   * @return {@code ResponseEntity<TransferResponse>} JSON representation of transfer response
+   * object.
+   */
+  @PostMapping(path = "/transfer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<TransferResponse> transferAmount(
+      @RequestBody @Valid TransferRequest transferRequest) {
+    log.info("Incoming request to transfer money");
+    return new ResponseEntity<>(accountsService.transferAmount(transferRequest), HttpStatus.OK);
   }
 
 }
